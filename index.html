@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống Chatbot Nhựa Tiền Phong</title>
+    <!-- Tải Tailwind CSS để tạo giao diện hiện đại và responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        #chat-container {
+            height: 500px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+        .user-message {
+            background-color: #3b82f6;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 12px 12px 0 12px;
+            align-self: flex-end;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        .bot-message {
+            background-color: #e5e7eb;
+            color: #1f2937;
+            padding: 8px 12px;
+            border-radius: 12px 12px 12px 0;
+            align-self: flex-start;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-2xl bg-white rounded-xl shadow-lg flex flex-col h-[700px]">
+        <div class="bg-blue-600 text-white p-4 text-center font-bold text-xl rounded-t-xl">
+            Trợ lý ảo Nhựa Tiền Phong
+        </div>
+        
+        <div id="chat-container" class="flex-grow p-4 space-y-4 flex flex-col">
+            <!-- Tin nhắn của bot -->
+            <div class="flex items-start space-x-2">
+                <div class="flex-shrink-0 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">AI</div>
+                <div class="bot-message">
+                    Xin chào! Tôi là Trợ lý ảo của Nhựa Tiền Phong. Tôi có thể giúp gì cho bạn?
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4 border-t border-gray-200 flex space-x-2">
+            <input type="text" id="user-input" placeholder="Nhập câu hỏi của bạn..." class="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button id="send-btn" class="bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
+                Gửi
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userInput = document.getElementById('user-input');
+            const sendBtn = document.getElementById('send-btn');
+            const chatContainer = document.getElementById('chat-container');
+
+            // API key
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+            // Initialize chat history with the system prompt
+            const chatHistory = [{
+                role: "user",
+                parts: [{
+                    text: `Bạn là Trợ lý ảo hỗ trợ khách hàng của Nhựa Tiền Phong.
+Nhiệm vụ của bạn là hỗ trợ trả lời câu hỏi kỹ thuật và sự cố sản phẩm dựa trên các tài liệu đã được import vào hệ thống.
+
+Nguyên tắc hoạt động:
+Chỉ trả lời dựa trên dữ liệu có trong các file đã được import.
+Không được suy đoán hoặc cung cấp thông tin ngoài phạm vi tài liệu.
+
+Nếu tìm thấy câu trả lời trong dữ liệu:
+Trình bày câu trả lời rõ ràng, dễ hiểu, thân thiện.
+Giải thích ngắn gọn nhưng đầy đủ.
+Có thể gợi ý bước tiếp theo để Khách hàng dễ xử lý.
+
+Nếu không tìm thấy câu trả lời trong dữ liệu:
+Xin lỗi Khách hàng vì chưa có thông tin trong tài liệu.
+Hỏi thêm thông tin từ Khách hàng: Họ tên, Số điện thoại/email, Mã sản phẩm hoặc mô tả sự cố
+Sau đó đưa thông tin liên hệ kỹ thuật viên để Khách hàng có thể chủ động liên hệ:
+Phòng Kỹ thuật Nhựa Tiền Phong
+SĐT: xxx-xxx-xxxx
+Email: support@nhuatienphong.vn
+
+Phong cách giao tiếp:
+Thân thiện, chuyên nghiệp, hỗ trợ nhanh chóng.
+Tránh dùng ngôn từ quá kỹ thuật gây khó hiểu cho khách hàng phổ thông.`
+                }]
+            }];
+            
+            // Function to add a message to the chat container
+            function addMessage(sender, message) {
+                const messageDiv = document.createElement('div');
+                const isUser = sender === 'user';
+                messageDiv.className = `flex items-start space-x-2 ${isUser ? 'justify-end' : ''}`;
+                messageDiv.innerHTML = `
+                    <div class="flex-shrink-0 w-8 h-8 bg-${isUser ? 'blue' : 'gray'}-500 rounded-full flex items-center justify-center text-white font-bold">${isUser ? 'Bạn' : 'AI'}</div>
+                    <div class="${isUser ? 'user-message' : 'bot-message'}">
+                        ${message.replace(/\n/g, '<br>')}
+                    </div>
+                `;
+                chatContainer.appendChild(messageDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+
+            // Function to handle sending the message
+            async function sendMessage() {
+                const prompt = userInput.value.trim();
+                if (prompt === '') return;
+
+                // Add user message to UI and history
+                addMessage('user', prompt);
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                userInput.value = '';
+
+                // Add a loading message
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'flex items-start space-x-2';
+                loadingDiv.innerHTML = `
+                    <div class="flex-shrink-0 w-8 h-8 bg-gray-500 rounded-full flex items-center justify-center text-white font-bold">AI</div>
+                    <div class="bot-message animate-pulse">
+                        <span class="dot-1">.</span><span class="dot-2">.</span><span class="dot-3">.</span>
+                    </div>
+                `;
+                chatContainer.appendChild(loadingDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+
+                try {
+                    const payload = {
+                        contents: chatHistory,
+                    };
+
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API Error: ${response.statusText}`);
+                    }
+
+                    // Await the full JSON response to avoid parsing errors
+                    const result = await response.json();
+                    
+                    // Remove loading message
+                    loadingDiv.remove();
+
+                    if (result.candidates && result.candidates.length > 0 && 
+                        result.candidates[0].content && result.candidates[0].content.parts && 
+                        result.candidates[0].content.parts.length > 0) {
+                        
+                        const text = result.candidates[0].content.parts[0].text;
+                        addMessage('model', text);
+
+                        // Add bot's response to chat history
+                        chatHistory.push({ role: "model", parts: [{ text: text }] });
+                    } else {
+                        console.error('Unexpected API response structure:', result);
+                        addMessage('model', 'Xin lỗi, không thể nhận được phản hồi hợp lệ. Vui lòng thử lại.');
+                    }
+                } catch (error) {
+                    console.error('Error during API call:', error);
+                    loadingDiv.remove();
+                    addMessage('model', 'Đã xảy ra lỗi không mong muốn. Vui lòng kiểm tra console để biết chi tiết.');
+                } finally {
+                    userInput.disabled = false;
+                    sendBtn.disabled = false;
+                    userInput.focus();
+                }
+            }
+
+            // Event listeners for button click and enter key press
+            sendBtn.addEventListener('click', sendMessage);
+            userInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
