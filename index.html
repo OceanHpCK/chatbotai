@@ -35,19 +35,32 @@
             max-width: 80%;
             word-wrap: break-word;
         }
+        /* Custom animation for loading dots */
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+        .animate-pulse .dot-1 { animation: pulse-dot 1s infinite 0s; }
+        .animate-pulse .dot-2 { animation: pulse-dot 1s infinite 0.2s; }
+        .animate-pulse .dot-3 { animation: pulse-dot 1s infinite 0.4s; }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
 
     <div class="w-full max-w-2xl bg-white rounded-xl shadow-lg flex flex-col h-[700px]">
-        <div class="bg-blue-600 text-white p-4 text-center font-bold text-xl rounded-t-xl">
+        <div class="bg-green-600 text-white p-4 text-center font-bold text-xl rounded-t-xl">
             Trợ lý ảo Nhựa Tiền Phong
         </div>
         
         <div id="chat-container" class="flex-grow p-4 space-y-4 flex flex-col">
             <!-- Tin nhắn của bot -->
             <div class="flex items-start space-x-2">
-                <div class="flex-shrink-0 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">AI</div>
+                <div class="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
+                    <!-- Biểu tượng Robot bằng SVG -->
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM8.5 13.5v-2h2v2h-2zM15.5 13.5v-2h2v2h-2z" />
+                    </svg>
+                </div>
                 <div class="bot-message">
                     Xin chào! Tôi là Trợ lý ảo của Nhựa Tiền Phong. Tôi có thể giúp gì cho bạn?
                 </div>
@@ -55,8 +68,8 @@
         </div>
 
         <div class="p-4 border-t border-gray-200 flex space-x-2">
-            <input type="text" id="user-input" placeholder="Nhập câu hỏi của bạn..." class="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <button id="send-btn" class="bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
+            <input type="text" id="user-input" placeholder="Nhập câu hỏi của bạn..." class="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+            <button id="send-btn" class="bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors">
                 Gửi
             </button>
         </div>
@@ -108,7 +121,13 @@ Tránh dùng ngôn từ quá kỹ thuật gây khó hiểu cho khách hàng ph�
                 const isUser = sender === 'user';
                 messageDiv.className = `flex items-start space-x-2 ${isUser ? 'justify-end' : ''}`;
                 messageDiv.innerHTML = `
-                    <div class="flex-shrink-0 w-8 h-8 bg-${isUser ? 'blue' : 'gray'}-500 rounded-full flex items-center justify-center text-white font-bold">${isUser ? 'Bạn' : 'AI'}</div>
+                    <div class="flex-shrink-0 w-8 h-8 bg-${isUser ? 'blue' : 'green'}-500 rounded-full flex items-center justify-center text-white font-bold">
+                        ${isUser ? 'Bạn' : `
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM8.5 13.5v-2h2v2h-2zM15.5 13.5v-2h2v2h-2z" />
+                            </svg>
+                        `}
+                    </div>
                     <div class="${isUser ? 'user-message' : 'bot-message'}">
                         ${message.replace(/\n/g, '<br>')}
                     </div>
@@ -131,7 +150,11 @@ Tránh dùng ngôn từ quá kỹ thuật gây khó hiểu cho khách hàng ph�
                 const loadingDiv = document.createElement('div');
                 loadingDiv.className = 'flex items-start space-x-2';
                 loadingDiv.innerHTML = `
-                    <div class="flex-shrink-0 w-8 h-8 bg-gray-500 rounded-full flex items-center justify-center text-white font-bold">AI</div>
+                    <div class="flex-shrink-0 w-8 h-8 bg-gray-500 rounded-full flex items-center justify-center text-white font-bold">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM8.5 13.5v-2h2v2h-2zM15.5 13.5v-2h2v2h-2z" />
+                        </svg>
+                    </div>
                     <div class="bot-message animate-pulse">
                         <span class="dot-1">.</span><span class="dot-2">.</span><span class="dot-3">.</span>
                     </div>
