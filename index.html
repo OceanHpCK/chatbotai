@@ -35,6 +35,22 @@
             max-width: 80%;
             word-wrap: break-word;
         }
+        .structured-card {
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1rem;
+            max-width: 80%;
+            align-self: flex-start;
+            margin-top: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .structured-card img {
+            border-radius: 8px;
+            width: 100%;
+            height: auto;
+            margin-top: 0.5rem;
+        }
         /* Custom animation for loading dots */
         @keyframes pulse-dot {
             0%, 100% { opacity: 0.2; }
@@ -86,6 +102,7 @@
         let auth;
         let userId;
         let chatId;
+        let inactivityTimerId; // Biến để lưu trữ ID của bộ đếm thời gian
 
         // Lấy các tham chiếu đến các phần tử DOM
         const userInput = document.getElementById('user-input');
@@ -153,6 +170,28 @@ Tránh dùng ngôn từ quá kỹ thuật gây khó hiểu cho khách hàng ph�
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
+        // Hàm thêm phản hồi có cấu trúc (thẻ/card)
+        function addStructuredResponse(title, content, imageUrl) {
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'structured-card';
+            cardDiv.innerHTML = `
+                <div class="flex items-start space-x-2">
+                    <div class="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM8.5 13.5v-2h2v2h-2zM15.5 13.5v-2h2v2h-2z" />
+                        </svg>
+                    </div>
+                    <div class="flex-grow">
+                        <h4 class="font-semibold text-gray-900">${title}</h4>
+                        <p class="text-gray-600 text-sm mt-1">${content}</p>
+                    </div>
+                </div>
+                ${imageUrl ? `<img src="${imageUrl}" class="mt-4" alt="Hình ảnh bổ sung">` : ''}
+            `;
+            chatContainer.appendChild(cardDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
         // Hàm để hiển thị toàn bộ lịch sử trò chuyện từ cơ sở dữ liệu
         function renderChatHistory(messages) {
             chatContainer.innerHTML = '';
@@ -161,7 +200,11 @@ Tránh dùng ngôn từ quá kỹ thuật gây khó hiểu cho khách hàng ph�
             
             messages.forEach(msg => {
                 if (msg.role !== 'system') {
-                    addMessage(msg.role, msg.parts[0].text);
+                    if (msg.type === 'structured-response') {
+                        addStructuredResponse(msg.content.title, msg.content.text, msg.content.imageUrl);
+                    } else {
+                        addMessage(msg.role, msg.parts[0].text);
+                    }
                 }
             });
             chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -171,6 +214,9 @@ Tránh dùng ngôn từ quá kỹ thuật gây khó hiểu cho khách hàng ph�
         async function sendMessage() {
             const prompt = userInput.value.trim();
             if (prompt === '') return;
+
+            // Xóa bộ đếm thời gian không hoạt động cũ
+            clearTimeout(inactivityTimerId);
 
             userInput.disabled = true;
             sendBtn.disabled = true;
@@ -224,11 +270,32 @@ Tránh dùng ngôn từ quá kỹ thuật gây khó hiểu cho khách hàng ph�
                     chatHistory.push(botMessage);
                     addMessage('model', botText);
 
+                    // Thêm phản hồi có cấu trúc và hình ảnh như yêu cầu
+                    const structuredTitle = "Giải pháp của bạn";
+                    const structuredContent = "Đây là một số thông tin bổ sung có thể hữu ích cho bạn.";
+                    // Sử dụng một placeholder image
+                    const structuredImage = "https://placehold.co/400x200/cccccc/333333?text=Nhu'a+Tien+Phong";
+                    addStructuredResponse(structuredTitle, structuredContent, structuredImage);
+
+                    // Chuẩn bị các tin nhắn để lưu vào Firestore
+                    const messagesToSave = [userMessage, botMessage, { type: 'structured-response', content: { title: structuredTitle, text: structuredContent, imageUrl: structuredImage } }];
+                    
                     // Lưu tin nhắn vào Firestore
                     const chatDocRef = doc(db, 'artifacts', appId, 'users', userId, 'chat_sessions', chatId);
                     await updateDoc(chatDocRef, {
-                        messages: arrayUnion(userMessage, botMessage)
+                        messages: arrayUnion(...messagesToSave)
                     });
+
+                    // Đặt bộ đếm thời gian cho tin nhắn tạm biệt sau 2 phút
+                    inactivityTimerId = setTimeout(() => {
+                        const goodbyeMessage = "Nếu bạn vẫn còn thắc mắc, vui lòng liên hệ với chúng tôi để được hỗ trợ chi tiết hơn:\n\nNhóm HTKH - Ban CNCL - Công Ty CP Nhựa TNTP\nSĐT: 0911.788.222\nEmail: duongdd@nhuatienphong.net\n\nChúc bạn một ngày tốt lành và hy vọng sẽ được phục vụ bạn lần nữa!";
+                        addMessage('model', goodbyeMessage);
+
+                        // Lưu tin nhắn tạm biệt vào Firestore
+                        updateDoc(chatDocRef, {
+                            messages: arrayUnion({ role: 'model', parts: [{ text: goodbyeMessage }] })
+                        });
+                    }, 120000); // 2 phút
                     
                 } else {
                     console.error('Cấu trúc phản hồi API không mong muốn:', result);
