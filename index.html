@@ -270,15 +270,8 @@ Tránh dùng ngôn từ quá kỹ thuật gây khó hiểu cho khách hàng ph�
                     chatHistory.push(botMessage);
                     addMessage('model', botText);
 
-                    // Thêm phản hồi có cấu trúc và hình ảnh như yêu cầu
-                    const structuredTitle = "Giải pháp của bạn";
-                    const structuredContent = "Đây là một số thông tin bổ sung có thể hữu ích cho bạn.";
-                    // Sử dụng một placeholder image
-                    const structuredImage = "https://placehold.co/400x200/cccccc/333333?text=Nhu'a+Tien+Phong";
-                    addStructuredResponse(structuredTitle, structuredContent, structuredImage);
-
                     // Chuẩn bị các tin nhắn để lưu vào Firestore
-                    const messagesToSave = [userMessage, botMessage, { type: 'structured-response', content: { title: structuredTitle, text: structuredContent, imageUrl: structuredImage } }];
+                    const messagesToSave = [userMessage, botMessage];
                     
                     // Lưu tin nhắn vào Firestore
                     const chatDocRef = doc(db, 'artifacts', appId, 'users', userId, 'chat_sessions', chatId);
