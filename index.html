@@ -103,6 +103,9 @@
         let userId;
         let chatId;
         let inactivityTimerId; // Biến để lưu trữ ID của bộ đếm thời gian
+        // Di chuyển khai báo appId và firebaseConfig ra ngoài hàm để chúng có thể truy cập được trên toàn bộ script
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = JSON.parse(__firebase_config);
 
         // Lấy các tham chiếu đến các phần tử DOM
         const userInput = document.getElementById('user-input');
@@ -316,8 +319,6 @@ Tránh dùng ngôn từ quá kỹ thuật gây khó hiểu cho khách hàng ph�
 
         // Bắt đầu ứng dụng bằng cách khởi tạo Firebase và xác thực người dùng
         document.addEventListener('DOMContentLoaded', () => {
-            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-            const firebaseConfig = JSON.parse(__firebase_config);
             const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
             // Khởi tạo Firebase
