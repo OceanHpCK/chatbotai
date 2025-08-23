@@ -3,140 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trợ Lý Ảo Nhựa Tiền Phong</title>
-    <!-- Tải Tailwind CSS để tạo giao diện nhanh chóng -->
+    <title>Trợ lý Hỗ trợ Kỹ thuật Nhựa Tiền Phong</title>
+    <!-- Tải Tailwind CSS để tạo giao diện hiện đại và responsive -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Tải Font Inter từ Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f3f4f6;
         }
-        .chat-container {
-            height: calc(100vh - 4rem);
-            max-width: 800px;
-        }
-        .chat-messages {
+        #chat-container {
+            height: 500px;
             overflow-y: auto;
+            scroll-behavior: smooth;
         }
         .user-message {
-            background-color: #d1fae5;
+            background-color: #3b82f6;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 12px 12px 0 12px;
+            align-self: flex-end;
+            max-width: 80%;
+            word-wrap: break-word;
         }
         .bot-message {
             background-color: #e5e7eb;
+            color: #1f2937;
+            padding: 8px 12px;
+            border-radius: 12px 12px 12px 0;
+            align-self: flex-start;
+            max-width: 80%;
+            word-wrap: break-word;
         }
+        /* Custom animation for loading dots */
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+        .animate-pulse .dot-1 { animation: pulse-dot 1s infinite 0s; }
+        .animate-pulse .dot-2 { animation: pulse-dot 1s infinite 0.2s; }
+        .animate-pulse .dot-3 { animation: pulse-dot 1s infinite 0.4s; }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4">
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
 
-<div class="chat-container bg-white shadow-xl rounded-2xl flex flex-col w-full p-6">
-    <!-- Tiêu đề Chatbot -->
-    <div class="text-center font-bold text-2xl text-gray-800 pb-4 border-b-2 border-gray-200">
-        Trợ lý ảo hỗ trợ kỹ thuật
-    </div>
-
-    <!-- Khu vực hiển thị tin nhắn -->
-    <div id="chat-messages" class="chat-messages flex-1 mt-4 space-y-4">
-        <!-- Tin nhắn sẽ được thêm vào đây bằng JavaScript -->
-    </div>
-
-    <!-- Khu vực nhập liệu -->
-    <div class="mt-6">
-        <div id="loading-indicator" class="hidden text-center text-sm text-gray-500 mb-2">
-            Đang soạn câu trả lời...
+    <div class="w-full max-w-2xl bg-white rounded-xl shadow-lg flex flex-col h-[700px]">
+        <div class="bg-green-600 text-white p-4 text-center font-bold text-xl rounded-t-xl">
+            Trợ lý hỗ trợ kỹ thuật Nhựa Tiền Phong
         </div>
-        <form id="chat-form" class="flex items-center">
-            <input
-                type="text"
-                id="user-input"
-                class="flex-1 p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
-                placeholder="Nhập câu hỏi của bạn..."
-            >
-            <button
-                type="submit"
-                class="ml-4 p-4 bg-emerald-600 text-white rounded-xl font-semibold hover:bg-emerald-700 transition-colors"
-            >
+        
+        <div id="chat-container" class="flex-grow p-4 space-y-4 flex flex-col">
+            <!-- Tin nhắn của bot -->
+            <div class="flex items-start space-x-2">
+                <div class="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
+                    <!-- Biểu tượng Robot bằng SVG -->
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM8.5 13.5v-2h2v2h-2zM15.5 13.5v-2h2v2h-2z" />
+                    </svg>
+                </div>
+                <div class="bot-message">
+                    Chào Bạn, Tôi là Trợ lý hỗ trợ kỹ thuật của Nhựa Tiền Phong, sẵn sàng hỗ trợ Quý khách giải đáp các thắc mắc kỹ thuật và sự cố sản phẩm của Công ty,<br>Xin mời Quý khách đặt câu hỏi ạ.
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4 border-t border-gray-200 flex space-x-2">
+            <input type="text" id="user-input" placeholder="Nhập câu hỏi của bạn..." class="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+            <button id="send-btn" class="bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors">
                 Gửi
             </button>
-        </form>
-        <div id="error-message" class="hidden text-sm text-red-500 mt-2"></div>
+        </div>
     </div>
-</div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // --- 1. CẤU HÌNH API VÀ MÔ HÌNH ---
-        // LƯU Ý QUAN TRỌNG:
-        // Đặt API Key thành chuỗi rỗng để nó được cung cấp tự động bởi môi trường.
-        const API_KEY = "AIzaSyCDFfsNYwqPQ4_8SGchEWX6mxTh1PlIQ9g";
-        
-        // Mô hình bạn muốn sử dụng. `gemini-2.5-flash-preview-05-20` là một lựa chọn mạnh mẽ.
-        const MODEL_NAME = "gemini-2.5-flash-preview-05-20"; 
+    <script type="module">
+        // Import các thư viện Firebase cần thiết
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // --- 2. LỊCH SỬ TRÒ CHUYỆN (CONTEXT) ---
-        // Đây là nơi bạn định nghĩa vai trò của chatbot.
-        // NHẤT ĐỊNH PHẢI SAO CHÉP CHÍNH XÁC "System Instructions" từ Google AI Studio vào đây.
-        // Điều này đảm bảo chatbot của bạn hoạt động đúng như mong muốn.
-        const chatHistory = [
-            {
-                "role": "user",
-                "parts": [{ "text": "Bạn là Trợ lý ảo hỗ trợ khách hàng của Nhựa Tiền Phong.\nNhiệm vụ của bạn là hỗ trợ trả lời câu hỏi kỹ thuật và sự cố sản phẩm dựa trên các tài liệu đã được import vào hệ thống.\n\nNguyên tắc hoạt động:\n\nNguồn dữ liệu:\n\nChỉ trả lời dựa trên dữ liệu có trong các file đã được import.\n\nKhông được suy đoán hoặc cung cấp thông tin ngoài phạm vi tài liệu.\n\nNếu tìm thấy câu trả lời trong dữ liệu:\n\nTrình bày câu trả lời rõ ràng, dễ hiểu, thân thiện.\n\nGiải thích ngắn gọn nhưng đầy đủ.\n\nCó thể gợi ý bước tiếp theo để Khách hàng dễ xử lý.\n\nNếu không tìm thấy câu trả lời trong dữ liệu:\n\nXin lỗi Khách hàng vì chưa có thông tin trong tài liệu.\n\nHỏi thêm thông tin từ Khách hàng:\n\nHọ tên\n\nSố điện thoại/email\n\nMã sản phẩm hoặc mô tả sự cố\n\nSau đó đưa thông tin liên hệ kỹ thuật viên để Khách hàng có thể chủ động liên hệ:\n\nNhóm HTKH - Ban CNCL - Công Ty CP Nhựa TNTP\n\nSĐT: xxx-xxx-xxxx\n\nEmail: support@nhuatienphong.vn\n\nPhong cách giao tiếp:\n\nThân thiện, chuyên nghiệp, hỗ trợ nhanh chóng.\n\nTránh dùng ngôn từ quá kỹ thuật gây khó hiểu cho khách hàng phổ thông." }]
-            },
-            {
-                "role": "model",
-                "parts": [{ "text": "Tôi là Trợ lý ảo hỗ trợ Khách hàng của Nhựa Tiền Phong, sẵn sàng hỗ trợ Quý khách giải đáp các thắc mắc kỹ thuật và sự cố sản phẩm của Công ty.\n\nXin mời Quý khách đặt câu hỏi ạ." }]
-            }
-        ];
+        // Khởi tạo các biến toàn cục cho Firebase và ứng dụng
+        let db;
+        let auth;
+        let userId;
+        let chatId;
 
-        // --- 3. CÁC BIẾN VÀ HÀM QUẢN LÝ GIAO DIỆN ---
-        const chatMessages = document.getElementById('chat-messages');
-        const chatForm = document.getElementById('chat-form');
+        // Lấy các tham chiếu đến các phần tử DOM
         const userInput = document.getElementById('user-input');
-        const loadingIndicator = document.getElementById('loading-indicator');
-        const errorMessage = document.getElementById('error-message');
+        const sendBtn = document.getElementById('send-btn');
+        const chatContainer = document.getElementById('chat-container');
 
-        /**
-         * Thêm tin nhắn vào giao diện người dùng.
-         * @param {string} text Nội dung tin nhắn.
-         * @param {string} sender Người gửi ('user' hoặc 'bot').
-         */
-        function addMessage(text, sender) {
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('p-4', 'rounded-xl', 'max-w-[85%]', 'whitespace-pre-wrap');
-            if (sender === 'user') {
-                messageElement.classList.add('user-message', 'ml-auto', 'rounded-br-none', 'text-gray-800');
-            } else {
-                messageElement.classList.add('bot-message', 'rounded-bl-none', 'text-gray-700');
-            }
-            messageElement.textContent = text;
-            chatMessages.appendChild(messageElement);
-            // Cuộn xuống cuối khung chat
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+        // Khóa API cho mô hình ngôn ngữ
+        // Sử dụng biến __api_key được cung cấp bởi môi trường Canvas để đảm bảo API key luôn hợp lệ
+        const apiKey = typeof __api_key !== 'undefined' ? __api_key : "AIzaSyCDFfsNYwqPQ4_8SGchEWX6mxTh1PlIQ9g";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+        // Lịch sử trò chuyện cục bộ để duy trì ngữ cảnh cho API
+        let chatHistory = [{
+            role: "user",
+            parts: [{
+                text: `Bạn là Trợ lý ảo hỗ trợ khách hàng của Nhựa Tiền Phong.
+Nhiệm vụ của bạn là hỗ trợ trả lời câu hỏi kỹ thuật và sự cố sản phẩm dựa trên các tài liệu đã được import vào hệ thống.
+
+Nguyên tắc hoạt động:
+Chỉ trả lời dựa trên dữ liệu có trong các file đã được import.
+Không được suy đoán hoặc cung cấp thông tin ngoài phạm vi tài liệu.
+
+Nếu tìm thấy câu trả lời trong dữ liệu:
+Trình bày câu trả lời rõ ràng, dễ hiểu, thân thiện.
+Giải thích ngắn gọn nhưng đầy đủ.
+Có thể gợi ý bước tiếp theo để Khách hàng dễ xử lý.
+
+Nếu không tìm thấy câu trả lời trong dữ liệu:
+Xin lỗi Khách hàng vì chưa có thông tin trong tài liệu.
+Hỏi thêm thông tin từ Khách hàng: Họ tên, Số điện thoại/email, Mã sản phẩm hoặc mô tả sự cố
+Sau đó đưa thông tin liên hệ kỹ thuật viên để Khách hàng có thể chủ động liên hệ:
+Nhóm HTKH - Ban CNCL - Công Ty CP Nhựa TNTP
+SĐT: 0911.788.222
+Email: duongdd@nhuatienphong.net
+
+Phong cách giao tiếp:
+Thân thiện, chuyên nghiệp, hỗ trợ nhanh chóng.
+Tránh dùng ngôn từ quá kỹ thuật gây khó hiểu cho khách hàng phổ thông.`
+            }]
+        }, {
+            role: "model",
+            parts: [{
+                text: "Chào Bạn, Tôi là Trợ lý hỗ trợ kỹ thuật của Nhựa Tiền Phong, sẵn sàng hỗ trợ Quý khách giải đáp các thắc mắc kỹ thuật và sự cố sản phẩm của Công ty,\n\nXin mời Quý khách đặt câu hỏi ạ."
+            }]
+        }];
+
+        // Hàm thêm tin nhắn vào giao diện người dùng
+        function addMessage(sender, message) {
+            const messageDiv = document.createElement('div');
+            const isUser = sender === 'user';
+            messageDiv.className = `flex items-start space-x-2 ${isUser ? 'justify-end' : ''}`;
+            messageDiv.innerHTML = `
+                <div class="flex-shrink-0 w-8 h-8 bg-${isUser ? 'blue' : 'green'}-500 rounded-full flex items-center justify-center text-white font-bold">
+                    ${isUser ? 'Bạn' : `
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM8.5 13.5v-2h2v2h-2zM15.5 13.5v-2h2v2h-2z" />
+                        </svg>
+                    `}
+                </div>
+                <div class="${isUser ? 'user-message' : 'bot-message'}">
+                    ${message.replace(/\n/g, '<br>')}
+                </div>
+            `;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
-        // --- 4. GỌI API GEMINI VÀ XỬ LÝ PHẢN HỒI ---
-        /**
-         * Gửi yêu cầu đến Gemini API và nhận câu trả lời.
-         * @param {string} message Tin nhắn của người dùng.
-         */
-        async function sendMessage(message) {
-            // Thêm tin nhắn của người dùng vào lịch sử trò chuyện
-            chatHistory.push({ "role": "user", "parts": [{ "text": message }] });
-            addMessage(message, 'user');
-            userInput.value = '';
-            loadingIndicator.classList.remove('hidden');
-            errorMessage.classList.add('hidden');
-
-            const payload = {
-                contents: chatHistory
-            };
-
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`;
+        // Hàm để hiển thị toàn bộ lịch sử trò chuyện từ cơ sở dữ liệu
+        function renderChatHistory(messages) {
+            chatContainer.innerHTML = '';
+            // Thêm tin nhắn chào mừng ban đầu
+            addMessage('model', 'Chào Bạn, Tôi là Trợ lý hỗ trợ kỹ thuật của Nhựa Tiền Phong, sẵn sàng hỗ trợ Quý khách giải đáp các thắc mắc kỹ thuật và sự cố sản phẩm của Công ty,\n\nXin mời Quý khách đặt câu hỏi ạ.');
             
+            messages.forEach(msg => {
+                if (msg.role !== 'system') {
+                    addMessage(msg.role, msg.parts[0].text);
+                }
+            });
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Hàm xử lý khi người dùng gửi tin nhắn
+        async function sendMessage() {
+            const prompt = userInput.value.trim();
+            if (prompt === '') return;
+
+            userInput.disabled = true;
+            sendBtn.disabled = true;
+
+            // Thêm tin nhắn của người dùng vào lịch sử chat cục bộ
+            const userMessage = { role: "user", parts: [{ text: prompt }] };
+            chatHistory.push(userMessage);
+            addMessage('user', prompt);
+            userInput.value = '';
+
+            // Thêm một tin nhắn đang tải
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'flex items-start space-x-2';
+            loadingDiv.innerHTML = `
+                <div class="flex-shrink-0 w-8 h-8 bg-gray-500 rounded-full flex items-center justify-center text-white font-bold">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM8.5 13.5v-2h2v2h-2zM15.5 13.5v-2h2v2h-2z" />
+                    </svg>
+                </div>
+                <div class="bot-message animate-pulse">
+                    <span class="dot-1">.</span><span class="dot-2">.</span><span class="dot-3">.</span>
+                </div>
+            `;
+            chatContainer.appendChild(loadingDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
             try {
+                // Gửi yêu cầu tới API của Gemini
+                const payload = { contents: chatHistory };
                 const response = await fetch(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -144,47 +207,109 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error(`API returned status ${response.status}: ${response.statusText}`);
+                     // Log the full response body to debug the API error
+                    const errorText = await response.text();
+                    throw new Error(`API Error: ${response.status} - ${response.statusText}. Response: ${errorText}`);
                 }
 
                 const result = await response.json();
-                
-                // Kiểm tra và lấy câu trả lời từ API
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts &&
-                    result.candidates[0].content.parts.length > 0) {
-                    const botResponse = result.candidates[0].content.parts[0].text;
-                    // Thêm câu trả lời của bot vào lịch sử và giao diện
-                    chatHistory.push({ "role": "model", "parts": [{ "text": botResponse }] });
-                    addMessage(botResponse, 'bot');
-                } else {
-                    throw new Error("Không nhận được câu trả lời từ mô hình.");
-                }
+                loadingDiv.remove();
 
+                if (result.candidates && result.candidates.length > 0 && 
+                    result.candidates[0].content && result.candidates[0].content.parts && 
+                    result.candidates[0].content.parts.length > 0) {
+                    
+                    const botText = result.candidates[0].content.parts[0].text;
+                    const botMessage = { role: "model", parts: [{ text: botText }] };
+                    chatHistory.push(botMessage);
+                    addMessage('model', botText);
+
+                    // Lưu tin nhắn vào Firestore
+                    const chatDocRef = doc(db, 'artifacts', appId, 'users', userId, 'chat_sessions', chatId);
+                    await updateDoc(chatDocRef, {
+                        messages: arrayUnion(userMessage, botMessage)
+                    });
+                    
+                } else {
+                    console.error('Cấu trúc phản hồi API không mong muốn:', result);
+                    addMessage('model', 'Xin lỗi, không thể nhận được phản hồi hợp lệ. Vui lòng thử lại.');
+                }
             } catch (error) {
-                console.error('Error during API call:', error);
-                errorMessage.textContent = 'Xin lỗi, đã xảy ra lỗi trong quá trình xử lý. Vui lòng thử lại sau.';
-                errorMessage.classList.remove('hidden');
+                console.error('Lỗi khi gọi API:', error);
+                loadingDiv.remove();
+                addMessage('model', 'Đã xảy ra lỗi không mong muốn. Vui lòng kiểm tra console để biết chi tiết.');
             } finally {
-                loadingIndicator.classList.add('hidden');
+                userInput.disabled = false;
+                sendBtn.disabled = false;
+                userInput.focus();
             }
         }
 
-        // --- 5. LẮNG NGHE SỰ KIỆN GỬI TIN NHẮN ---
-        chatForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const message = userInput.value.trim();
-            if (message) {
-                sendMessage(message);
+        // Event listeners
+        sendBtn.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                sendMessage();
             }
         });
-        
-        // Hiển thị tin nhắn chào mừng ban đầu từ lịch sử chat
-        addMessage("Dạ vâng, tôi đã hiểu rõ vai trò của mình.\n\nTôi là Trợ lý ảo của Nhựa Tiền Phong, sẵn sàng hỗ trợ Quý khách giải đáp các thắc mắc kỹ thuật và sự cố sản phẩm dựa trên tài liệu kỹ thuật của công ty.\n\nXin mời Quý khách đặt câu hỏi ạ.", 'bot');
-    });
-</script>
 
+        // Bắt đầu ứng dụng bằng cách khởi tạo Firebase và xác thực người dùng
+        document.addEventListener('DOMContentLoaded', () => {
+            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+            const firebaseConfig = JSON.parse(__firebase_config);
+            const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+            // Khởi tạo Firebase
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+
+            // Xác thực người dùng
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    userId = user.uid;
+                    const chatSessionsCollection = collection(db, 'artifacts', appId, 'users', userId, 'chat_sessions');
+                    
+                    // Lấy hoặc tạo một phiên trò chuyện mới cho người dùng
+                    const sessionDocRef = doc(chatSessionsCollection, `session_${userId}`);
+                    const sessionDoc = await getDoc(sessionDocRef);
+                    
+                    if (sessionDoc.exists()) {
+                        chatId = sessionDoc.id;
+                        const data = sessionDoc.data();
+                        chatHistory = data.messages || chatHistory;
+                        renderChatHistory(chatHistory);
+                    } else {
+                        // Tạo một phiên trò chuyện mới
+                        chatId = `session_${userId}`;
+                        await setDoc(sessionDocRef, {
+                            userId: userId,
+                            messages: [],
+                            createdAt: new Date()
+                        });
+                        console.log("Phiên trò chuyện mới đã được tạo.");
+                    }
+
+                    // Lắng nghe các thay đổi thời gian thực từ Firestore
+                    onSnapshot(sessionDocRef, (doc) => {
+                        const data = doc.data();
+                        if (data && data.messages) {
+                            chatHistory = data.messages;
+                            renderChatHistory(chatHistory);
+                        }
+                    });
+
+                } else {
+                    // Nếu không có token, đăng nhập ẩn danh
+                    if (initialAuthToken) {
+                        await signInWithCustomToken(auth, initialAuthToken);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
-
-
