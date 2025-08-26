@@ -3,374 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trợ lý Hỗ trợ Kỹ thuật Nhựa Tiền Phong</title>
-    <!-- Tải Tailwind CSS để tạo giao diện hiện đại và responsive -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Nhựa Tiền Phong - Giới thiệu cơ bản</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        /* General body and font styles */
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e0f8e0; /* Light green background */
+            color: #333;
         }
-        #chat-container {
-            height: 500px;
-            overflow-y: auto;
-            scroll-behavior: smooth;
+
+        /* Main header section */
+        .header {
+            background-color: #2e8b57; /* Dark green */
+            color: #ffffff;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
-        .user-message {
-            background-color: #3b82f6;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 12px 12px 0 12px;
-            align-self: flex-end;
-            max-width: 80%;
-            word-wrap: break-word;
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
         }
-        .bot-message {
-            background-color: #e5e7eb;
-            color: #1f2937;
-            padding: 8px 12px;
-            border-radius: 12px 12px 12px 0;
-            align-self: flex-start;
-            max-width: 80%;
-            word-wrap: break-word;
+
+        .header p {
+            font-size: 1.1rem;
+            margin: 0;
         }
-        .structured-card {
+
+        /* Main content container */
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Content sections */
+        .section {
             background-color: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 1rem;
-            max-width: 80%;
-            align-self: flex-start;
-            margin-top: 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        .structured-card img {
-            border-radius: 8px;
+
+        .section h2 {
+            color: #2e8b57;
+            border-left: 5px solid #2e8b57;
+            padding-left: 10px;
+            margin-top: 0;
+        }
+
+        .section p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .section ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        
+        .section li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer section */
+        .footer {
+            background-color: #2e8b57;
+            color: #ffffff;
+            text-align: center;
+            padding: 1.5rem 1rem;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+        /* Chatbot toggle button */
+        .chatbot-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 65px;
+            height: 65px;
+            background-color: #3cb371; /* Medium sea green */
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            font-size: 2rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+        
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Chatbot window */
+        .chatbot-window {
+            display: none;
+            position: fixed;
+            bottom: 6.5rem;
+            right: 2rem;
+            width: 350px;
+            height: 450px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            z-index: 999;
+        }
+
+        .chatbot-iframe {
             width: 100%;
-            height: auto;
-            margin-top: 0.5rem;
+            height: 100%;
+            border: none;
         }
-        /* Custom animation for loading dots */
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 1; }
+
+        /* Responsive design for small screens */
+        @media (max-width: 600px) {
+            .container {
+                margin: 1rem auto;
+            }
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            .section {
+                padding: 1.5rem;
+            }
+            .chatbot-toggle {
+                bottom: 1rem;
+                right: 1rem;
+                width: 55px;
+                height: 55px;
+                font-size: 1.5rem;
+            }
+            .chatbot-window {
+                bottom: 5.5rem;
+                right: 1rem;
+                width: 90%;
+                height: 400px;
+            }
         }
-        .animate-pulse .dot-1 { animation: pulse-dot 1s infinite 0s; }
-        .animate-pulse .dot-2 { animation: pulse-dot 1s infinite 0.2s; }
-        .animate-pulse .dot-3 { animation: pulse-dot 1s infinite 0.4s; }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+<body>
 
-    <div class="w-full max-w-2xl bg-white rounded-xl shadow-lg flex flex-col h-[700px]">
-        <div class="bg-green-600 text-white p-4 text-center font-bold text-xl rounded-t-xl">
-            Trợ lý hỗ trợ kỹ thuật Nhựa Tiền Phong
-        </div>
-        
-        <div id="chat-container" class="flex-grow p-4 space-y-4 flex flex-col">
-            <!-- Tin nhắn của bot -->
-            <div class="flex items-start space-x-2">
-                <div class="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
-                    <!-- Biểu tượng Robot bằng SVG -->
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM8.5 13.5v-2h2v2h-2zM15.5 13.5v-2h2v2h-2z" />
-                    </svg>
-                </div>
-                <div class="bot-message">
-                    Chào Bạn, Tôi là Trợ lý hỗ trợ kỹ thuật của Nhựa Tiền Phong, sẵn sàng hỗ trợ Quý khách giải đáp các thắc mắc kỹ thuật và sự cố sản phẩm của Công ty,<br>Xin mời Quý khách đặt câu hỏi ạ.
-                </div>
-            </div>
+    <div class="header">
+        <h1>Công ty Cổ phần Nhựa Thiếu niên Tiền phong</h1>
+        <p>Thương hiệu hàng đầu Việt Nam về sản xuất ống nhựa và phụ tùng</p>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>Giới thiệu chung</h2>
+            <p><strong>Công ty Cổ phần Nhựa Thiếu niên Tiền phong</strong> (Nhựa Tiền Phong) là một trong những doanh nghiệp hàng đầu trong ngành sản xuất ống nhựa và phụ tùng tại Việt Nam. Với hơn 60 năm kinh nghiệm, công ty đã không ngừng phát triển và đổi mới công nghệ để mang đến những sản phẩm chất lượng cao, đáp ứng mọi nhu cầu của thị trường và các công trình xây dựng từ dân dụng đến công nghiệp.</p>
         </div>
 
-        <div class="p-4 border-t border-gray-200 flex space-x-2">
-            <input type="text" id="user-input" placeholder="Nhập câu hỏi của bạn..." class="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
-            <button id="send-btn" class="bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors">
-                Gửi
-            </button>
+        <div class="section">
+            <h2>Sản phẩm chủ lực</h2>
+            <p>Nhựa Tiền Phong tự hào với danh mục sản phẩm đa dạng, phục vụ cho nhiều mục đích khác nhau:</p>
+            <ul>
+                <li><strong>Ống và phụ tùng uPVC:</strong> Được sử dụng rộng rãi trong các hệ thống cấp thoát nước, thông gió và xử lý nước thải.</li>
+                <li><strong>Ống và phụ tùng HDPE:</strong> Giải pháp tối ưu cho hệ thống cấp nước sạch, bảo vệ cáp quang và các công trình thủy lợi.</li>
+                <li><strong>Ống và phụ tùng PPR:</strong> Dòng sản phẩm chuyên dụng cho hệ thống đường ống nước nóng và lạnh trong các công trình dân dụng.</li>
+                <li><strong>Các sản phẩm khác:</strong> Bao gồm ống nhựa phức hợp, phụ tùng ống cống, và các giải pháp nhựa kỹ thuật cao.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Tầm nhìn và cam kết</h2>
+            <p>Với phương châm "Chất lượng là trên hết", Nhựa Tiền Phong cam kết mang đến những sản phẩm vượt trội, đảm bảo độ bền và an toàn tuyệt đối. Chúng tôi không ngừng nghiên cứu và ứng dụng công nghệ tiên tiến nhất, với mục tiêu trở thành nhà sản xuất vật liệu xây dựng hàng đầu khu vực, đóng góp vào sự phát triển bền vững của đất nước và nâng cao chất lượng cuộc sống.</p>
         </div>
     </div>
 
-    <script type="module">
-        // Import các thư viện Firebase cần thiết
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    <div class="footer">
+        <p>&copy; 2024 Nhựa Thiếu niên Tiền phong. All Rights Reserved.</p>
+    </div>
 
-        // Khởi tạo các biến toàn cục cho Firebase và ứng dụng
-        let db;
-        let auth;
-        let userId;
-        let chatId;
-        let inactivityTimerId; // Biến để lưu trữ ID của bộ đếm thời gian
-        // Di chuyển khai báo appId và firebaseConfig ra ngoài hàm để chúng có thể truy cập được trên toàn bộ script
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = JSON.parse(__firebase_config);
+    <!-- Chatbot Integration -->
+    <div class="chatbot-container">
+        <button class="chatbot-toggle" id="chatbot-toggle">💬</button>
+        <div class="chatbot-window" id="chatbot-window">
+            <!-- Iframe to load the chatbot from the provided webhook -->
+            <iframe src="https://n8nhome.nhuatienphong.io.vn/webhook/577f3a96-e095-4764-a55c-baad9ed92617/chat" class="chatbot-iframe"></iframe>
+        </div>
+    </div>
 
-        // Lấy các tham chiếu đến các phần tử DOM
-        const userInput = document.getElementById('user-input');
-        const sendBtn = document.getElementById('send-btn');
-        const chatContainer = document.getElementById('chat-container');
+    <script>
+        const chatbotToggle = document.getElementById('chatbot-toggle');
+        const chatbotWindow = document.getElementById('chatbot-window');
 
-        // Khóa API cho mô hình ngôn ngữ
-        // Sử dụng biến __api_key được cung cấp bởi môi trường Canvas để đảm bảo API key luôn hợp lệ
-        const apiKey = typeof __api_key !== 'undefined' ? __api_key : "AIzaSyCDFfsNYwqPQ4_8SGchEWX6mxTh1PlIQ9g";
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-
-        // Lịch sử trò chuyện cục bộ để duy trì ngữ cảnh cho API
-        let chatHistory = [{
-            role: "user",
-            parts: [{
-                text: `Bạn là Trợ lý ảo hỗ trợ khách hàng của Nhựa Tiền Phong.
-Nhiệm vụ của bạn là hỗ trợ trả lời câu hỏi kỹ thuật và sự cố sản phẩm dựa trên các tài liệu đã được import vào hệ thống.
-
-Nguyên tắc hoạt động:
-Chỉ trả lời dựa trên dữ liệu có trong các file đã được import.
-Không được suy đoán hoặc cung cấp thông tin ngoài phạm vi tài liệu.
-
-Nếu tìm thấy câu trả lời trong dữ liệu:
-Trình bày câu trả lời rõ ràng, dễ hiểu, thân thiện.
-Giải thích ngắn gọn nhưng đầy đủ.
-Có thể gợi ý bước tiếp theo để Khách hàng dễ xử lý.
-
-Nếu không tìm thấy câu trả lời trong dữ liệu:
-Xin lỗi Khách hàng vì chưa có thông tin trong tài liệu.
-Hỏi thêm thông tin từ Khách hàng: Họ tên, Số điện thoại/email, Mã sản phẩm hoặc mô tả sự cố
-Sau đó đưa thông tin liên hệ kỹ thuật viên để Khách hàng có thể chủ động liên hệ:
-Nhóm HTKH - Ban CNCL - Công Ty CP Nhựa TNTP
-SĐT: 0911.788.222
-Email: duongdd@nhuatienphong.net
-
-Phong cách giao tiếp:
-Thân thiện, chuyên nghiệp, hỗ trợ nhanh chóng.
-Tránh dùng ngôn từ quá kỹ thuật gây khó hiểu cho khách hàng phổ thông.`
-            }]
-        }, {
-            role: "model",
-            parts: [{
-                text: "Chào Bạn, Tôi là Trợ lý hỗ trợ kỹ thuật của Nhựa Tiền Phong, sẵn sàng hỗ trợ Quý khách giải đáp các thắc mắc kỹ thuật và sự cố sản phẩm của Công ty,\n\nXin mời Quý khách đặt câu hỏi ạ."
-            }]
-        }];
-
-        // Hàm thêm tin nhắn vào giao diện người dùng
-        function addMessage(sender, message) {
-            const messageDiv = document.createElement('div');
-            const isUser = sender === 'user';
-            messageDiv.className = `flex items-start space-x-2 ${isUser ? 'justify-end' : ''}`;
-            messageDiv.innerHTML = `
-                <div class="flex-shrink-0 w-8 h-8 bg-${isUser ? 'blue' : 'green'}-500 rounded-full flex items-center justify-center text-white font-bold">
-                    ${isUser ? 'Bạn' : `
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM8.5 13.5v-2h2v2h-2zM15.5 13.5v-2h2v2h-2z" />
-                        </svg>
-                    `}
-                </div>
-                <div class="${isUser ? 'user-message' : 'bot-message'}">
-                    ${message.replace(/\n/g, '<br>')}
-                </div>
-            `;
-            chatContainer.appendChild(messageDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-
-        // Hàm thêm phản hồi có cấu trúc (thẻ/card)
-        function addStructuredResponse(title, content, imageUrl) {
-            const cardDiv = document.createElement('div');
-            cardDiv.className = 'structured-card';
-            cardDiv.innerHTML = `
-                <div class="flex items-start space-x-2">
-                    <div class="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM8.5 13.5v-2h2v2h-2zM15.5 13.5v-2h2v2h-2z" />
-                        </svg>
-                    </div>
-                    <div class="flex-grow">
-                        <h4 class="font-semibold text-gray-900">${title}</h4>
-                        <p class="text-gray-600 text-sm mt-1">${content}</p>
-                    </div>
-                </div>
-                ${imageUrl ? `<img src="${imageUrl}" class="mt-4" alt="Hình ảnh bổ sung">` : ''}
-            `;
-            chatContainer.appendChild(cardDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-
-        // Hàm để hiển thị toàn bộ lịch sử trò chuyện từ cơ sở dữ liệu
-        function renderChatHistory(messages) {
-            chatContainer.innerHTML = '';
-            // Thêm tin nhắn chào mừng ban đầu
-            addMessage('model', 'Chào Bạn, Tôi là Trợ lý hỗ trợ kỹ thuật của Nhựa Tiền Phong, sẵn sàng hỗ trợ Quý khách giải đáp các thắc mắc kỹ thuật và sự cố sản phẩm của Công ty,\n\nXin mời Quý khách đặt câu hỏi ạ.');
-            
-            messages.forEach(msg => {
-                if (msg.role !== 'system') {
-                    if (msg.type === 'structured-response') {
-                        addStructuredResponse(msg.content.title, msg.content.text, msg.content.imageUrl);
-                    } else {
-                        addMessage(msg.role, msg.parts[0].text);
-                    }
-                }
-            });
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-
-        // Hàm xử lý khi người dùng gửi tin nhắn
-        async function sendMessage() {
-            const prompt = userInput.value.trim();
-            if (prompt === '') return;
-
-            // Xóa bộ đếm thời gian không hoạt động cũ
-            clearTimeout(inactivityTimerId);
-
-            userInput.disabled = true;
-            sendBtn.disabled = true;
-
-            // Thêm tin nhắn của người dùng vào lịch sử chat cục bộ
-            const userMessage = { role: "user", parts: [{ text: prompt }] };
-            chatHistory.push(userMessage);
-            addMessage('user', prompt);
-            userInput.value = '';
-
-            // Thêm một tin nhắn đang tải
-            const loadingDiv = document.createElement('div');
-            loadingDiv.className = 'flex items-start space-x-2';
-            loadingDiv.innerHTML = `
-                <div class="flex-shrink-0 w-8 h-8 bg-gray-500 rounded-full flex items-center justify-center text-white font-bold">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM8.5 13.5v-2h2v2h-2zM15.5 13.5v-2h2v2h-2z" />
-                    </svg>
-                </div>
-                <div class="bot-message animate-pulse">
-                    <span class="dot-1">.</span><span class="dot-2">.</span><span class="dot-3">.</span>
-                </div>
-            `;
-            chatContainer.appendChild(loadingDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-
-            try {
-                // Gửi yêu cầu tới API của Gemini
-                const payload = { contents: chatHistory };
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                     // Log the full response body to debug the API error
-                    const errorText = await response.text();
-                    throw new Error(`API Error: ${response.status} - ${response.statusText}. Response: ${errorText}`);
-                }
-
-                const result = await response.json();
-                loadingDiv.remove();
-
-                if (result.candidates && result.candidates.length > 0 && 
-                    result.candidates[0].content && result.candidates[0].content.parts && 
-                    result.candidates[0].content.parts.length > 0) {
-                    
-                    const botText = result.candidates[0].content.parts[0].text;
-                    const botMessage = { role: "model", parts: [{ text: botText }] };
-                    chatHistory.push(botMessage);
-                    addMessage('model', botText);
-
-                    // Chuẩn bị các tin nhắn để lưu vào Firestore
-                    const messagesToSave = [userMessage, botMessage];
-                    
-                    // Lưu tin nhắn vào Firestore
-                    const chatDocRef = doc(db, 'artifacts', appId, 'users', userId, 'chat_sessions', chatId);
-                    await updateDoc(chatDocRef, {
-                        messages: arrayUnion(...messagesToSave)
-                    });
-
-                    // Đặt bộ đếm thời gian cho tin nhắn tạm biệt sau 2 phút
-                    inactivityTimerId = setTimeout(() => {
-                        const goodbyeMessage = "Nếu bạn vẫn còn thắc mắc, vui lòng liên hệ với chúng tôi để được hỗ trợ chi tiết hơn:\n\nNhóm HTKH - Ban CNCL - Công Ty CP Nhựa TNTP\nSĐT: 0911.788.222\nEmail: duongdd@nhuatienphong.net\n\nChúc bạn một ngày tốt lành và hy vọng sẽ được phục vụ bạn lần nữa!";
-                        addMessage('model', goodbyeMessage);
-
-                        // Lưu tin nhắn tạm biệt vào Firestore
-                        updateDoc(chatDocRef, {
-                            messages: arrayUnion({ role: 'model', parts: [{ text: goodbyeMessage }] })
-                        });
-                    }, 120000); // 2 phút
-                    
-                } else {
-                    console.error('Cấu trúc phản hồi API không mong muốn:', result);
-                    addMessage('model', 'Xin lỗi, không thể nhận được phản hồi hợp lệ. Vui lòng thử lại.');
-                }
-            } catch (error) {
-                console.error('Lỗi khi gọi API:', error);
-                loadingDiv.remove();
-                addMessage('model', 'Đã xảy ra lỗi không mong muốn. Vui lòng kiểm tra console để biết chi tiết.');
-            } finally {
-                userInput.disabled = false;
-                sendBtn.disabled = false;
-                userInput.focus();
+        // Toggle the visibility of the chatbot window on button click
+        chatbotToggle.addEventListener('click', () => {
+            if (chatbotWindow.style.display === 'none' || chatbotWindow.style.display === '') {
+                chatbotWindow.style.display = 'block';
+            } else {
+                chatbotWindow.style.display = 'none';
             }
-        }
-
-        // Event listeners
-        sendBtn.addEventListener('click', sendMessage);
-        userInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                sendMessage();
-            }
-        });
-
-        // Bắt đầu ứng dụng bằng cách khởi tạo Firebase và xác thực người dùng
-        document.addEventListener('DOMContentLoaded', () => {
-            const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-            // Khởi tạo Firebase
-            const app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            auth = getAuth(app);
-
-            // Xác thực người dùng
-            onAuthStateChanged(auth, async (user) => {
-                if (user) {
-                    userId = user.uid;
-                    const chatSessionsCollection = collection(db, 'artifacts', appId, 'users', userId, 'chat_sessions');
-                    
-                    // Lấy hoặc tạo một phiên trò chuyện mới cho người dùng
-                    const sessionDocRef = doc(chatSessionsCollection, `session_${userId}`);
-                    const sessionDoc = await getDoc(sessionDocRef);
-                    
-                    if (sessionDoc.exists()) {
-                        chatId = sessionDoc.id;
-                        const data = sessionDoc.data();
-                        chatHistory = data.messages || chatHistory;
-                        renderChatHistory(chatHistory);
-                    } else {
-                        // Tạo một phiên trò chuyện mới
-                        chatId = `session_${userId}`;
-                        await setDoc(sessionDocRef, {
-                            userId: userId,
-                            messages: [],
-                            createdAt: new Date()
-                        });
-                        console.log("Phiên trò chuyện mới đã được tạo.");
-                    }
-
-                    // Lắng nghe các thay đổi thời gian thực từ Firestore
-                    onSnapshot(sessionDocRef, (doc) => {
-                        const data = doc.data();
-                        if (data && data.messages) {
-                            chatHistory = data.messages;
-                            renderChatHistory(chatHistory);
-                        }
-                    });
-
-                } else {
-                    // Nếu không có token, đăng nhập ẩn danh
-                    if (initialAuthToken) {
-                        await signInWithCustomToken(auth, initialAuthToken);
-                    } else {
-                        await signInAnonymously(auth);
-                    }
-                }
-            });
         });
     </script>
+
 </body>
 </html>
